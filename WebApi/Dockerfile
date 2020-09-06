@@ -10,17 +10,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-nanoserver-1903 AS build
 WORKDIR /src
-COPY ["WebApi/WebApi.csproj", "WebApi/"]
-COPY ["NuGet.config", "NuGet.config"]
-RUN dotnet restore --configfile NuGet.config "WebApi/WebApi.csproj"
+COPY ["WebApi/RestTest.csproj", "WebApi/"]
+RUN dotnet restore "WebApi/RestTest.csproj"
 COPY . .
 WORKDIR "/src/WebApi"
-RUN dotnet build "WebApi.csproj" -c Release -o /app/build
+RUN dotnet build "RestTest.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "RestTest.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WebApi.dll"]
+ENTRYPOINT ["dotnet", "RestTest.dll"]
