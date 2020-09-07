@@ -1,24 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using RestTest.Interfaces;
+using RestTest.Repositories;
 using WebApi.Models;
 using WebApi.Validators;
 
-namespace WebApi
+namespace RestTest
 {
     public class Startup
     {
+        //private readonly Container container = new Container();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,11 +29,16 @@ namespace WebApi
             services.AddSwaggerGen();
             services.AddControllers();
 
-            services.AddMvc(setup => {
+            services.AddMvc(setup =>
+            {
                 //...mvc setup...
             }).AddFluentValidation();
+
+            //register dependencies
             services.AddTransient<IValidator<HiModel>, HiModelValidator>();
+            services.AddTransient<IHiRepository, HiRepository>();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,23 +53,16 @@ namespace WebApi
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
-
-            
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
         }
     }
 }

@@ -40,7 +40,7 @@ namespace RestTest.IntegrationTests
             var request = new HiModel { Id = 3, Name = "Hi no 3" };
 
             // Act
-            var response = await Client.PostAsync("/api/hi", ContentHelper.GetStringContent(request));
+            var response = await Client.PostAsync("/hi", ContentHelper.GetStringContent(request));
             var value = await response.Content.ReadAsStringAsync();
 
             // Assert

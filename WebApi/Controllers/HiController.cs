@@ -1,27 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestTest.Interfaces;
 using WebApi.Models;
 
-namespace WebApi.Controllers
+namespace RestTest.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class HiController
     {
-        public HiController()
-        {
+        private readonly IHiRepository hiRepository;
 
+        public HiController(IHiRepository hiRepository)
+        {
+            this.hiRepository = hiRepository;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public HiModel Get(int id)
         {
-            return new HiModel { Id = id, Name = "Some name" };
+            return hiRepository.Get(id);
         }
 
         [HttpPost]
         public int Create(HiModel request)
         {
-            return 1;
+            return hiRepository.Add(request);
         }
     }
 }

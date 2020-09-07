@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace RestTest.IntegrationTests
 {
-    //https://www.codingame.com/playgrounds/35462/creating-web-api-in-asp-net-core-2-0/part-3---integration-tests
+   
     public class TestFixture<TStartup> : IDisposable
     {
         public static string GetProjectPath(string projectRelativePath, Assembly startupAssembly)
@@ -95,7 +95,7 @@ namespace RestTest.IntegrationTests
 
             // Add configuration for client
             Client = Server.CreateClient();
-            Client.BaseAddress = new Uri("http://localhost:80");
+            Client.BaseAddress = new Uri("http://localhost");
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
