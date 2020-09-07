@@ -1,2 +1,5 @@
 /WebApi/bin
 /WebApi/obj
+/.vs
+/RestTest.IntegrationTests/bin
+/RestTest.IntegrationTests/obj
