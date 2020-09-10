@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RestTest.Interfaces;
+using System.Threading.Tasks;
 using WebApi.Models;
 
 namespace RestTest.Controllers
@@ -16,14 +18,20 @@ namespace RestTest.Controllers
         }
 
         [HttpGet("{id}")]
-        public HiModel Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<HiModel> Get(int id)
         {
             return hiRepository.Get(id);
         }
 
         [HttpPost]
-        public int Create(HiModel request)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<int> Create(HiModel request)
         {
+            if(request.Id > 20)
+                return new BadRequestResult();
+
             return hiRepository.Add(request);
         }
     }

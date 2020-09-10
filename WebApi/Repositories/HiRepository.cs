@@ -12,7 +12,7 @@ namespace RestTest.Repositories
 
         public int Add(HiModel model)
         {
-            return 1;
+            return model.Id;
         }
     }
 }
